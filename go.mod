@@ -1,4 +1,4 @@
-module github.com/adrianfuro/GoCodePilot/server
+module github.com/adrianfuro/GoCodePilot
 
 go 1.22.2
 

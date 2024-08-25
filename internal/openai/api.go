@@ -1,4 +1,4 @@
-package main
+package openai
 
 import (
 	"encoding/json"
@@ -24,7 +24,7 @@ type OpenAIResponse struct {
 	} `json:"choices"`
 }
 
-func callOpenAI(messages []Message) (string, error) {
+func CallOpenAI(messages []Message) (string, error) {
 	client := resty.New()
 
 	body, err := json.Marshal(map[string]interface{}{
@@ -63,25 +63,4 @@ func callOpenAI(messages []Message) (string, error) {
 	}
 
 	return strings.Join(contents, "\n"), nil
-}
-
-func main() {
-	if len(os.Args) < 2 {
-		log.Fatal("Please provide a message to send to OpenAI.")
-	}
-
-	userInput := strings.Join(os.Args[1:], " ")
-
-	messages := []Message{
-		{Role: "system", Content: "You are a helpful assistant."},
-		{Role: "user", Content: userInput},
-	}
-
-	response, err := callOpenAI(messages)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println("Response from OpenAI: ", response)
 }
