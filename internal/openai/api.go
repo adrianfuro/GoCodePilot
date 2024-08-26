@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 	"strings"
 
 	"github.com/go-resty/resty/v2"
@@ -24,7 +23,15 @@ type OpenAIResponse struct {
 	} `json:"choices"`
 }
 
-func CallOpenAI(messages []Message) (string, error) {
+type Client struct {
+	APIKey string
+}
+
+func NewClient(apiKey string) *Client {
+	return &Client{APIKey: apiKey}
+}
+
+func (c *Client) CallOpenAI(messages []Message) (string, error) {
 	client := resty.New()
 
 	body, err := json.Marshal(map[string]interface{}{
@@ -33,11 +40,16 @@ func CallOpenAI(messages []Message) (string, error) {
 		"max_tokens": 4000,
 	})
 
-	url := "https://api.openai.com//v1/chat/completions"
+	if err != nil {
+		log.Printf("Error marshalling request body: %v", err)
+		return "", err
+	}
+
+	url := "https://api.openai.com/v1/chat/completions"
 
 	resp, err := client.R().
 		SetHeader("Content-Type", "application/json").
-		SetHeader("Authorization", "Bearer "+os.Getenv("OPENAI_API_KEY")).
+		SetHeader("Authorization", "Bearer "+c.APIKey).
 		SetBody(body).
 		Post(url)
 
