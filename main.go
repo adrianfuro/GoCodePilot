@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -16,7 +17,7 @@ func main() {
 	userInput := strings.Join(os.Args[1:], " ")
 
 	messages := []openai.Message{
-		{Role: "system", Content: "You are a helpful assistant."},
+		{Role: "system", Content: "You are a Software Engineer and you respond only with code without markdown format."},
 		{Role: "user", Content: userInput},
 	}
 
@@ -26,5 +27,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Println("Response from OpenAI: ", response)
+	fmt.Println(response)
 }
