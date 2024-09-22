@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/adrianfuro/GoCodePilot/internal/ollama"
@@ -15,18 +16,24 @@ type EnvVars struct {
 	LLMProvider  string
 	SystemPrompt string
 	OpenAIKey    string
+	Model        string
+	Temperature  string
+	Tokens       string
 }
 
-func LoadEnvVars() EnvVars {
+func LoadEnvVars() *EnvVars {
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
-	return EnvVars{
+	return &EnvVars{
 		LLMProvider:  os.Getenv("LLM_PROVIDER"),
 		SystemPrompt: os.Getenv("SYSTEM_PROMPT"),
 		OpenAIKey:    os.Getenv("OPENAI_KEY"),
+		Model:        os.Getenv("MODEL"),
+		Temperature:  os.Getenv("TEMPERATURE"),
+		Tokens:       os.Getenv("TOKENS"),
 	}
 }
 
@@ -45,8 +52,24 @@ func main() {
 			{Role: "user", Content: userInput},
 		}
 
+		temperature, err := strconv.ParseFloat(envVars.Temperature, 64)
+		if err != nil {
+			log.Fatalf("Error parsing TEMPERATURE: %v", err)
+		}
+
+		tokens, err := strconv.Atoi(envVars.Tokens)
+		if err != nil {
+			log.Fatalf("Error parsing TOKENS: %v", err)
+		}
+
+		modelConfig := openai.ModelConfig{
+			MaxTokens:   tokens,
+			Model:       envVars.Model,
+			Temperature: temperature,
+		}
+
 		client := openai.NewClient(envVars.OpenAIKey)
-		response, _ := client.CallOpenAI(messages)
+		response, _ := client.CallOpenAI(messages, &modelConfig)
 
 		fmt.Println(response)
 

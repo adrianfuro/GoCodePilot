@@ -9,6 +9,12 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
+type ModelConfig struct {
+	Model       string  `json:"model"`
+	MaxTokens   int     `json:"max_tokens"`
+	Temperature float64 `json:"temperature"`
+}
+
 type Message struct {
 	Role    string `json:"role"`
 	Content string `json:"content"`
@@ -31,13 +37,14 @@ func NewClient(apiKey string) *Client {
 	return &Client{APIKey: apiKey}
 }
 
-func (c *Client) CallOpenAI(messages []Message) (string, error) {
+func (c *Client) CallOpenAI(messages []Message, modelconfig *ModelConfig) (string, error) {
 	client := resty.New()
 
 	body, err := json.Marshal(map[string]interface{}{
-		"model":      "gpt-4o",
-		"messages":   messages,
-		"max_tokens": 4000,
+		"model":       modelconfig.Model,
+		"messages":    messages,
+		"max_tokens":  modelconfig.MaxTokens,
+		"temperature": modelconfig.Temperature,
 	})
 
 	if err != nil {
