@@ -39,7 +39,6 @@ func LoadEnvVars() *EnvVars {
 
 func main() {
 	envVars := LoadEnvVars()
-
 	if len(os.Args) < 2 {
 		log.Fatalf("Please provide a message to send to %s.", envVars.LLMProvider)
 	}
@@ -88,5 +87,4 @@ func main() {
 	} else {
 		log.Fatalf("Invalid LLM provider: %s", envVars.LLMProvider)
 	}
-
 }

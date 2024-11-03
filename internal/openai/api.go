@@ -9,6 +9,10 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
+type ChatConfig struct {
+	TimeToRespond int
+}
+
 type ModelConfig struct {
 	Model       string  `json:"model"`
 	MaxTokens   int     `json:"max_tokens"`
@@ -18,6 +22,15 @@ type ModelConfig struct {
 type Message struct {
 	Role    string `json:"role"`
 	Content string `json:"content"`
+}
+
+type ChatEntry struct {
+	Message        *Message
+	OpenAIResponse *OpenAIResponse
+}
+
+type ChatHistory struct {
+	Entries []ChatEntry
 }
 
 type OpenAIResponse struct {
