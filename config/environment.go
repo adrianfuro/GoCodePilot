@@ -7,7 +7,6 @@ import (
 )
 
 type EnvVars struct {
-	LLMProvider  string
 	SystemPrompt string
 	OpenAIKey    string
 	Model        string
@@ -22,7 +21,6 @@ func LoadEnvVars() *EnvVars {
 	}
 
 	return &EnvVars{
-		LLMProvider:  os.Getenv("LLM_PROVIDER"),
 		SystemPrompt: os.Getenv("SYSTEM_PROMPT"),
 		OpenAIKey:    os.Getenv("OPENAI_KEY"),
 		Model:        os.Getenv("MODEL"),

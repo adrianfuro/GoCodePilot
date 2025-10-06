@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/adrianfuro/GoCodePilot/config"
 	"github.com/adrianfuro/GoCodePilot/internal/openai"
-
 	"github.com/spf13/cobra"
+	"log"
 )
 
 type createCommandParams struct {
@@ -29,7 +29,10 @@ func init() {
 	createAssistant.Flags().StringVar(&params.model, "model", "gpt-4o", "Model to use")
 	createAssistant.Flags().StringVar(&params.assistantType, "type", "code_interpreter", "Type of assistant [code_interpreter/file_search]")
 
-	createAssistant.MarkFlagRequired("name")
+	err := createAssistant.MarkFlagRequired("name")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	RootCommand.AddCommand(createAssistant)
 }

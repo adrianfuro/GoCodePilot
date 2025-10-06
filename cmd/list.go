@@ -25,6 +25,5 @@ func init() {
 			fmt.Println(response)
 		},
 	}
-
 	RootCommand.AddCommand(listAssistant)
 }

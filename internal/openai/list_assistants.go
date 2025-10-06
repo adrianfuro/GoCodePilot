@@ -48,7 +48,7 @@ func (c *Client) ListAssistantOpenAI() (string, error) {
 		return "", err
 	}
 	// Marshal the data to JSON
-	jsonData, err := json.Marshal(listResp.Data)
+	jsonData, err := json.MarshalIndent(listResp.Data, "", "\t")
 	if err != nil {
 		log.Printf("Error marshalling data to JSON: %v", err)
 		return "", err
@@ -56,4 +56,3 @@ func (c *Client) ListAssistantOpenAI() (string, error) {
 
 	return string(jsonData), nil
 }
-

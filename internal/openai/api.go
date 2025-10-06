@@ -24,11 +24,6 @@ type Message struct {
 	Content string `json:"content"`
 }
 
-type MessageAssistants struct {
-	Role    string `json:"role"`
-	Content string `json:"content"`
-}
-
 type ChatEntry struct {
 	Message        *Message
 	OpenAIResponse *OpenAIResponse
@@ -50,8 +45,7 @@ type OpenAIResponse struct {
 type AssistantAIResponse struct {
 	Choices []struct {
 		Message struct {
-			Role    string `json:"role"`
-			Content string `json:"content"`
+			Message
 		} `json:"message"`
 	} `json:"choices"`
 }
